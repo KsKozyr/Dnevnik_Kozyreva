@@ -19,7 +19,7 @@ test('Проверяем тримминг для пробела в начале 
   expect(fullTrim('Классная работа ')).toEqual('Классная работа');
   expect(fullTrim('123 ')).toEqual('123');
   expect(fullTrim('!#$ ')).toEqual('!#$');
-  expect(fullTrim(null)).toEqual(null);
+  expect(fullTrim(null)).toEqual("");
 });
 
 /**
@@ -41,7 +41,7 @@ test.each`
  ${'Васька'}       | ${true}
  ${'Ва'}           | ${true}
  ${'В'}            | ${false}
- ${''}             | ${false}
+ ${''}             | ${''}
  ${'Васька Петька'}| ${false}
  ${' Васька'}      | ${false}
  ${'Васька '}      | ${false}
@@ -49,7 +49,7 @@ test.each`
  ${123}            | ${false}
  ${'123'}          | ${true}
  ${'Vas!ka'}       | ${true}
- ${null}           | ${false}
+ ${null}           | ${null}
  `('$name = $expected', ({name, expected}) => {
   expect(nameIsValid(name)).toEqual(expected);
 });
