@@ -12,6 +12,14 @@ test('Проверяем тримминг для пробела в начале 
   expect(fullTrim('\tЭто домашка')).toEqual('Это домашка');
   expect(fullTrim('Это домашка\t')).toEqual('Это домашка');
   expect(fullTrim('\tЭто домашка\t')).toEqual('Это домашка');
+  expect(fullTrim('Это домашка')).toEqual('Это домашка');
+  expect(fullTrim('    Это домашка')).toEqual('Это домашка');
+  expect(fullTrim('Это домашка    ')).toEqual('Это домашка');
+  expect(fullTrim(' Это    домашка')).toEqual('Это    домашка');
+  expect(fullTrim('Классная работа ')).toEqual('Классная работа');
+  expect(fullTrim('123 ')).toEqual('123');
+  expect(fullTrim('!#$ ')).toEqual('!#$');
+  expect(fullTrim(null)).toEqual(null);
 });
 
 /**
@@ -29,10 +37,19 @@ test('Передать валидную кличку', () => {
   expect(nameIsValid('Имя')).toEqual(true);
 });
 test.each`
-  name | expected
- ${'/\w{2,}/'} | ${true}; 
- ${''} | ${false};
- ${'/[^s]/'} | ${true};
- `(({name, expected}) => {
-  expect(nameIsValid(name)).toBe(expected);
+                 name | expected
+ ${'Васька'}       | ${true}
+ ${'Ва'}           | ${true}
+ ${'В'}            | ${false}
+ ${''}             | ${false}
+ ${'Васька Петька'}| ${false}
+ ${' Васька'}      | ${false}
+ ${'Васька '}      | ${false}
+ ${'       '}      | ${false}
+ ${123}            | ${false}
+ ${'123'}          | ${true}
+ ${'Vas!ka'}       | ${true}
+ ${null}           | ${false}
+ `('$name = $expected', ({name, expected}) => {
+  expect(nameIsValid(name)).toEqual(expected);
 });
